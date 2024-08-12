@@ -3,6 +3,7 @@ package com.atipera.apiconnect.service;
 import com.atipera.apiconnect.exception.NotFoundException;
 import com.atipera.apiconnect.model.BranchInfo;
 import com.atipera.apiconnect.model.RepositoryInfo;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +30,7 @@ public class ApiConnectService {
 
             if (response != null) {
                 for (RepositoryInfo repo : response) {
-                    if (!repo.isFork()) {  // Filter out forked repositories
+                    if (!repo.isFork()) {
                         String branchesUrl = repo.getBranchesUrl().replace("{/branch}", "");
                         BranchInfo[] branches = restTemplate.getForObject(branchesUrl, BranchInfo[].class);
 
@@ -41,10 +42,12 @@ public class ApiConnectService {
                     }
                 }
             }
-        } catch (HttpClientErrorException.NotFound e) {
-            throw new NotFoundException("GitHub user '" + username + "' not found");
         } catch (HttpClientErrorException e) {
-            throw new RuntimeException("Failed to fetch repositories from GitHub: " + e.getMessage());
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new NotFoundException("GitHub user '" + username + "' not found");
+            } else {
+                throw new RuntimeException("Failed to fetch repositories from GitHub: " + e.getMessage());
+            }
         }
 
         return repositories;
