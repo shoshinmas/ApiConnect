@@ -1,15 +1,20 @@
 package com.atipera.apiconnect.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RepositoryInfo {
-    private String name;
-    private String ownerLogin;
-    private String branchesUrl;
-    private boolean fork;
-    private List<BranchInfo> branches;
 
-    // Getters and setters
+    private String name;
+    private Owner owner;
+    private boolean fork;
+    private String branchesUrl;
+    private List<BranchInfo> branches;
+    private String username;
+
+    // Getters and Setters
 
     public String getName() {
         return name;
@@ -19,20 +24,12 @@ public class RepositoryInfo {
         this.name = name;
     }
 
-    public String getOwnerLogin() {
-        return ownerLogin;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setOwnerLogin(String ownerLogin) {
-        this.ownerLogin = ownerLogin;
-    }
-
-    public String getBranchesUrl() {
-        return branchesUrl;
-    }
-
-    public void setBranchesUrl(String branchesUrl) {
-        this.branchesUrl = branchesUrl;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     public boolean isFork() {
@@ -43,6 +40,14 @@ public class RepositoryInfo {
         this.fork = fork;
     }
 
+    public String getBranchesUrl() {
+        return branchesUrl;
+    }
+
+    public void setBranchesUrl(String branchesUrl) {
+        this.branchesUrl = branchesUrl;
+    }
+
     public List<BranchInfo> getBranches() {
         return branches;
     }
@@ -50,5 +55,8 @@ public class RepositoryInfo {
     public void setBranches(List<BranchInfo> branches) {
         this.branches = branches;
     }
-}
 
+    public void setOwnerLogin(String username) {
+        this.username = username;
+    }
+}

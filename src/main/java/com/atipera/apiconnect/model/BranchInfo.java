@@ -1,10 +1,14 @@
 package com.atipera.apiconnect.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BranchInfo {
+
     private String name;
     private Commit commit;
 
-    // Getters and setters
+    // Getters and Setters
 
     public String getName() {
         return name;
@@ -20,22 +24,5 @@ public class BranchInfo {
 
     public void setCommit(Commit commit) {
         this.commit = commit;
-    }
-
-    public String getLastCommitSha() {
-        return commit.getSha();
-    }
-
-    // Inner class for Commit
-    public static class Commit {
-        private String sha;
-
-        public String getSha() {
-            return sha;
-        }
-
-        public void setSha(String sha) {
-            this.sha = sha;
-        }
     }
 }

@@ -3,6 +3,7 @@ package com.atipera.apiconnect.service;
 import com.atipera.apiconnect.exception.NotFoundException;
 import com.atipera.apiconnect.model.BranchInfo;
 import com.atipera.apiconnect.model.RepositoryInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,16 +17,21 @@ public class ApiConnectService {
 
     private final RestTemplate restTemplate;
 
+    @Value("${github.api.url}")
+    private String githubApiUrl;
+
+    @Value("${github.api.token}")
+    private String githubApiToken;
+
     public ApiConnectService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     public List<RepositoryInfo> getRepositories(String username) {
-        String repositoriesUrl = "https://api.github.com/users/" + username + "/repos";
+        String repositoriesUrl = githubApiUrl.replace("{username}", username);
         List<RepositoryInfo> repositories = new ArrayList<>();
 
         try {
-            // Fetch the list of repositories for the given user
             RepositoryInfo[] response = restTemplate.getForObject(repositoriesUrl, RepositoryInfo[].class);
 
             if (response != null) {
