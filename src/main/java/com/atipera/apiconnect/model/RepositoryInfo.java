@@ -14,7 +14,12 @@ public class RepositoryInfo {
     private List<BranchInfo> branches;
     private String username;
 
-    // Getters and Setters
+    public RepositoryInfo(String name, Owner owner, boolean fork, String branchesUrl) {
+        this.name = name;
+        this.owner = owner;
+        this.fork = fork;
+        this.branchesUrl = branchesUrl;
+    }
 
     public String getName() {
         return name;

@@ -7,6 +7,10 @@ public class Owner {
 
     private String login;
 
+    public Owner(String username) {
+        this.login = username;
+    }
+
     // Getters and Setters
 
     public String getLogin() {
